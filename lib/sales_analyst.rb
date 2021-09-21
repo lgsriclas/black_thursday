@@ -137,4 +137,123 @@ class SalesAnalyst
     total = @invoices.all.length.to_f
     (100.0 * @invoices.find_all_by_status(status).length / total).round(2)
   end
+
+  def invoice_paid_in_full?(invoice_id)
+    all_transaction = @transactions.find_all_by_invoice_id(invoice_id)
+
+    if @transactions.find_all_by_invoice_id(invoice_id) != nil
+      all_transaction.any? do |transaction|
+        transaction.result == :success
+      end
+    else
+      false
+    end
+  end
+
+  def invoice_total(invoice_id)
+    all_invoice_items = @invoice_items.find_all_by_invoice_id(invoice_id)
+
+    if invoice_paid_in_full?(invoice_id) == true
+      all_invoice_items.sum do |invoice_item|
+        invoice_item.quantity * invoice_item.unit_price
+      end
+    else
+      return 0
+    end
+  end
+
+  def find_all_invoice_items_by_date(date)
+    invoice_array = @invoices.all.find_all do |invoice|
+      invoice.created_at == date
+    end # => array of invoices created on date
+
+    invoice_id_array = invoice_array.map do |invoice|
+      invoice.id
+    end # => array of invoice ids created on date
+
+    invoice_id_array.map do |invoice_id|
+      @invoice_items.find_all_by_invoice_id(invoice_id)
+    end.flatten # => array of invoice items from date of invoice
+  end
+
+  def total_revenue_by_date(date)
+    find_all_invoice_items_by_date(date).sum do |invoice_item|
+      invoice_item.quantity * invoice_item.unit_price
+    end
+  end
+
+  def find_all_invoice_items_by_merchant(merchant)
+    successful_invoice_array = @transactions.successful_invoice_ids.map do |invoice_id|
+      @invoices.find_by_id(invoice_id)
+    end
+
+    successful_merchant_invoices = successful_invoice_array.find_all do |invoice|
+      invoice.merchant_id == merchant.id
+    end # => array of successful invoices for given merchant
+
+    successful_invoice_id_array = successful_merchant_invoices.map do |invoice|
+      invoice.id
+    end # => array of successful invoice ids for a given merchant
+
+    successful_invoice_id_array.map do |invoice_id|
+      @invoice_items.find_all_by_invoice_id(invoice_id)
+    end.flatten # => array of invoice items from a given merchant
+  end
+
+  def merchants_with_pending_invoices
+    @invoices.all.map do |invoice|
+      var = @transactions.find_all_by_invoice_id(invoice.id).none? do |transaction|
+        transaction.result == :success
+      end
+      @merchants.find_by_id(invoice.merchant_id) if var
+    end.uniq.compact
+  end
+
+  def merchants_with_only_one_item
+    @merchants.all.find_all do |merchant|
+      @items.find_all_by_merchant_id(merchant.id).length == 1
+    end
+  end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+    months = {
+      'January' => 1,
+      'Febrary' => 2,
+      'March' => 3,
+      'April' => 4,
+      'May' => 5,
+      'June' => 6,
+      'July' => 7,
+      'August' => 8,
+      'September' => 9,
+      'October' => 10,
+      'November' => 11,
+      'December' => 12
+    }
+
+    merchants_with_only_one_item.find_all do |merchant|
+      merchant.created_at[5..6].to_i == months[month]
+    end
+  end
+
+  def revenue_by_merchant(merchant_id)
+    merchant = @merchants.find_by_id(merchant_id)
+    find_all_invoice_items_by_merchant(merchant).sum do |invoice_item|
+      invoice_item.quantity * invoice_item.unit_price
+    end
+  end
+
+  def top_revenue_earners(x = 20)
+    array = @merchants.all.map do |merchant|
+      {merchant => revenue_by_merchant(merchant.id)}
+    end
+
+    array.sort_by! do |element|
+      element.values[0]
+    end.reverse!
+
+    array[0..(x-1)].map do |element|
+      element.keys[0]
+    end
+  end
 end

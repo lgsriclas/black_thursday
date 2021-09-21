@@ -143,4 +143,82 @@ RSpec.describe SalesAnalyst do
       expect(analyst.invoice_status(:returned)).to eq 13.5
     end
   end
+
+  context 'Iteration 3' do
+
+    it '#invoice_paid_in_full?' do
+      expected1 = analyst.invoice_paid_in_full?(4702)
+      expected2 = analyst.invoice_paid_in_full?(1389)
+      expect(expected1).to be true
+      expect(expected2).to be false
+    end
+
+    it '#invoice_total' do
+      invoice_total1 = (analyst.invoice_total(2)).to_f
+      expect(invoice_total1).to eq(5289.13)
+
+      invoice_total2 = (analyst.invoice_total(1389)).to_f
+      expect(invoice_total2).to eq(0)
+
+      invoice_total3 = (analyst.invoice_total(4702)).to_f
+      expect(invoice_total3).to eq(5010.21)
+    end
+  end
+
+  context 'Iteration 4' do
+
+    it '#find_all_invoice_item_by_date' do
+      expect(analyst.find_all_invoice_item_by_date('2014-02-13')).to be_a(Array)
+      expect(analyst.find_all_invoice_item_by_date('2014-02-13').length).to eq(1)
+    end
+
+    it '#total_revenue_by_date' do
+      expect(analyst.total_revenue_by_date('2014-02-13')).to eq(0)
+      expect(analyst.total_revenue_by_date('2009-02-24')).to eq(1363.50)
+    end
+
+    it '#top_revenue_earners' do
+      expected = analyst.top_revenue_earners(5)
+      first = expected.first
+      last = expected.last
+
+      expect(expected.length).to eq 5
+
+      expect(first.class).to eq Merchant
+      expect(first.id).to eq 12334634
+
+      expect(last.class).to eq Merchant
+      expect(last.id).to eq 12335747 # need to update once method runs
+    end
+
+    it '#merchants_with_pending_invoices' do
+      expected = analyst.merchants_with_pending_invoices
+
+      expect(expected).to be_an Array
+      expect(expected.length).to eq 467
+    end
+
+    it '#merchants_with_only_one_item' do
+      expected = analyst.merchants_with_only_one_item
+
+      expect(expected).to be_an Array
+      expect(expected.length).to eq 243
+    end
+
+    it '#merchants_with_only_one_item_registered_in_month' do
+      expected1 = analyst.merchants_with_only_one_item_registered_in_month('March')
+      expected2 = analyst.merchants_with_only_one_item_registered_in_month('June')
+
+      expect(expected1).to be_an Array
+      expect(expected1.length).to eq 21
+      expect(expected2.length).to eq 18
+    end
+
+    it '#revenue_by_merchant' do
+      expected = analyst.revenue_by_merchant(12334194)
+
+      expect(expected).to eq BigDecimal(expected)
+      expect(expected.class).to eq BigDecimal
+    end
+  end
 end

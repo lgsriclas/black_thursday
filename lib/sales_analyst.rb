@@ -257,24 +257,29 @@ class SalesAnalyst
     end
   end
 
+  #Get an array of a merchant's items
+  #Get item ids
+  #Find invoice items that are connected to each id (only successful ones)
+  #Iterate through successful array
+  #Add quantities
   def most_sold_item_for_merchant(merchant_id)
-    # merchant = @merchants.find_by_id(merchant_id)
-    # successful_invoice_array = @transactions.successful_invoice_ids.map do |invoice_id|
-    #   @invoices.find_by_id(invoice_id)
-    # end
-    #
-    # successful_merchant_invoices = successful_invoice_array.find_all do |invoice|
-    #   invoice.merchant_id == merchant.id
-    # end # => array of successful invoices for given merchant
-    #
-    # hash = Hash.new(0)
-    # invoice_items_array.each do |invoice_item|
-    #   if !hash[@items.find_by_id(invoice_item.item_id)]
-    #     hash[@items.find_by_id(invoice_item.item_id)] = invoice_item.quantity
-    #   else
-    #     hash[@items.find_by_id(invoice_item.item_id)] += invoice_item.quantity
-    #   end
-    # end
-    # hash
+    items_by_merchant = @items.find_all_by_merchant_id(merchant_id)
+    array_of_item_ids = items_by_merchant.map do |item|
+      item.id
+    end
+
+    array_of_ii = array_of_item_ids.map do |item_id|
+      @invoice_items.find_all_by_item_id(item_id)
+    end.flatten
+
+    successful_ii = []
+    array_of_ii.each do |ii|
+      if invoice_paid_in_full?(ii.id)
+        successful_ii << ii
+      end
+    end 
+
+require "pry"; binding.pry
+
   end
 end

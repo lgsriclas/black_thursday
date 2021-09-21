@@ -15,10 +15,7 @@ class Transaction
     @result                       = data[:result].to_sym
     @created_at                   = Time.parse(data[:created_at])
     @updated_at                   = Time.parse(data[:updated_at])
-<<<<<<< HEAD
   end    
-=======
-  end
 
   def update_ccnum(cc_num)
     @credit_card_number = cc_num
@@ -35,5 +32,4 @@ class Transaction
   def update_updated_at
     @updated_at = Time.now
   end
->>>>>>> 921e09858c6118e90fcac478fec3881bfc8d880a
 end

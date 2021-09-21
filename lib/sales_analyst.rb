@@ -258,6 +258,23 @@ class SalesAnalyst
   end
 
   def most_sold_item_for_merchant(merchant_id)
-    
+    # merchant = @merchants.find_by_id(merchant_id)
+    # successful_invoice_array = @transactions.successful_invoice_ids.map do |invoice_id|
+    #   @invoices.find_by_id(invoice_id)
+    # end
+    #
+    # successful_merchant_invoices = successful_invoice_array.find_all do |invoice|
+    #   invoice.merchant_id == merchant.id
+    # end # => array of successful invoices for given merchant
+    #
+    # hash = Hash.new(0)
+    # invoice_items_array.each do |invoice_item|
+    #   if !hash[@items.find_by_id(invoice_item.item_id)]
+    #     hash[@items.find_by_id(invoice_item.item_id)] = invoice_item.quantity
+    #   else
+    #     hash[@items.find_by_id(invoice_item.item_id)] += invoice_item.quantity
+    #   end
+    # end
+    # hash
   end
 end

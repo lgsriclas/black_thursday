@@ -1,13 +1,13 @@
+# frozen_string_literal: true
+
 require 'csv'
 require_relative 'customer'
+require_relative 'csv_readable'
 
 class CustomerRepository
+  include CSV_readable
 
   attr_reader :all
-
-
-# says all is a method that returns an array of all known instances
-#but since everyone set it up as an instance var, I will do that too.
 
   def initialize(path)
     @all  = generate(path)
@@ -18,7 +18,7 @@ class CustomerRepository
   end
 
   def generate(path)
-    rows = CSV.read(path, headers: true, header_converters: :symbol)
+    rows = read_csv(path)
 
     rows.map do |row|
       Customer.new(row)
@@ -57,13 +57,13 @@ class CustomerRepository
   def update(id, attributes)
     customer = find_by_id(id)
     if attributes[:first_name] != nil
-      customer.first_name = attributes[:first_name]
+      customer.update_fname(attributes[:first_name])
     end
     if attributes[:last_name] != nil
-      customer.last_name = attributes[:last_name]
+      customer.update_lname(attributes[:last_name])
     end
     if customer != nil
-      customer.updated_at = Time.now
+      customer.update_updated_at
     end
     customer
   end

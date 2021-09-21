@@ -167,9 +167,9 @@ RSpec.describe SalesAnalyst do
 
   context 'Iteration 4' do
 
-    it '#find_all_invoice_item_by_date' do
-      expect(analyst.find_all_invoice_item_by_date('2014-02-13')).to be_a(Array)
-      expect(analyst.find_all_invoice_item_by_date('2014-02-13').length).to eq(1)
+    it '#find_all_invoice_items_by_date' do
+      expect(analyst.find_all_invoice_items_by_date('2014-02-13')).to be_a(Array)
+      expect(analyst.find_all_invoice_items_by_date('2014-02-13').length).to eq(1)
     end
 
     it '#total_revenue_by_date' do
@@ -188,7 +188,7 @@ RSpec.describe SalesAnalyst do
       expect(first.id).to eq 12334634
 
       expect(last.class).to eq Merchant
-      expect(last.id).to eq 12335747 # need to update once method runs
+      expect(last.id).to eq 12335213
     end
 
     it '#merchants_with_pending_invoices' do

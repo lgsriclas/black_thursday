@@ -200,7 +200,7 @@ RSpec.describe SalesAnalyst do
 
     it '#merchants_with_only_one_item' do
       expected = analyst.merchants_with_only_one_item
-
+require "pry"; binding.pry
       expect(expected).to be_an Array
       expect(expected.length).to eq 243
     end
@@ -219,6 +219,13 @@ RSpec.describe SalesAnalyst do
 
       expect(expected).to eq BigDecimal(expected)
       expect(expected.class).to eq BigDecimal
+    end
+
+    it '#most_sold_item_for_merchant' do
+      expected = analyst.most_sold_item_for_merchant(12334112)
+
+      expect(expected).to be_an Array
+      expect(expected[0].name).to eq(['I Love You to the Moon and Back'])
     end
   end
 end

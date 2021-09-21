@@ -256,4 +256,8 @@ class SalesAnalyst
       element.keys[0]
     end
   end
+
+  def most_sold_item_for_merchant(merchant_id)
+    
+  end
 end

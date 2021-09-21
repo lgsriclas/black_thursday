@@ -182,7 +182,7 @@ RSpec.describe SalesAnalyst do
       first = expected.first
       last = expected.last
 
-      expect(expected.length).to eq 5
+      expect(expected.length).to eq 10
 
       expect(first.class).to eq Merchant
       expect(first.id).to eq 12334634

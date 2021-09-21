@@ -181,7 +181,6 @@ RSpec.describe SalesAnalyst do
       expected = analyst.top_revenue_earners(5)
       first = expected.first
       last = expected.last
-      require "pry"; binding.pry
 
       expect(expected.length).to eq 5
 
@@ -197,7 +196,6 @@ RSpec.describe SalesAnalyst do
 
       expect(expected).to be_an Array
       expect(expected.length).to eq 467
-      require "pry"; binding.pry
     end
 
     it '#merchants_with_only_one_item' do

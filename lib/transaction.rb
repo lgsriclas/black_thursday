@@ -16,5 +16,5 @@ class Transaction
     @result                       = data[:result].to_sym
     @created_at                   = Time.parse(data[:created_at])
     @updated_at                   = Time.parse(data[:updated_at])
-  end
+  end    
 end

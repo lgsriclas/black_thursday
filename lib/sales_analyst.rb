@@ -183,15 +183,19 @@ class SalesAnalyst
   end
 
   def find_all_invoice_items_by_merchant(merchant)
-    invoice_array = @invoices.all.find_all do |invoice|
+    successful_invoice_array = @transactions.successful_invoice_ids.map do |invoice_id|
+      @invoices.find_by_id(invoice_id)
+    end
+
+    successful_merchant_invoices = successful_invoice_array.find_all do |invoice|
       invoice.merchant_id == merchant.id
-    end # => array of invoices for a given merchant
+    end # => array of successful invoices for given merchant
 
-    invoice_id_array = invoice_array.map do |invoice|
+    successful_invoice_id_array = successful_merchant_invoices.map do |invoice|
       invoice.id
-    end # => array of invoice ids for a given merchant
+    end # => array of successful invoice ids for a given merchant
 
-    invoice_id_array.map do |invoice_id|
+    successful_invoice_id_array.map do |invoice_id|
       @invoice_items.find_all_by_invoice_id(invoice_id)
     end.flatten # => array of invoice items from a given merchant
   end

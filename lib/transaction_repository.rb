@@ -47,6 +47,12 @@ class TransactionRepository
     end
   end
 
+  def successful_invoice_ids
+    find_all_by_result(:success).map do |transaction|
+      transaction.invoice_id
+    end.uniq!
+  end
+
   def create(attributes)
     attributes[:id] = @all.last.id + 1
     attributes[:created_at] = Time.now.to_s
@@ -66,7 +72,7 @@ class TransactionRepository
     txn_to_update.result = result if result
     if txn_to_update != nil
       txn_to_update.updated_at = Time.now
-    end 
+    end
     txn_to_update
   end
 

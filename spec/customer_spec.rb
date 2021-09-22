@@ -3,40 +3,40 @@ require './lib/customer'
 
 RSpec.describe Customer do
 
-  before(:each) do
-    @c = Customer.new({
+  before :each do
+    @customer = Customer.new({
       :id => 6,
       :first_name => "Joan",
       :last_name => "Clarke",
-      :created_at => Time.now.to_s,
-      :updated_at => Time.now.to_s
+      :created_at => Time.now,
+      :updated_at => Time.now
     })
   end
 
   it 'exists' do
-    expect(@c).to be_an_instance_of Customer
+    expect(@customer).to be_an_instance_of Customer
   end
 
   it 'has attributes' do
-    expect(@c.id).to eq(6)
-    expect(@c.first_name).to eq("Joan")
-    expect(@c.last_name).to eq("Clarke")
-    expect(@c.created_at).to be_an_instance_of Time
-    expect(@c.updated_at).to be_an_instance_of Time
+    expect(@customer.id).to eq(6)
+    expect(@customer.first_name).to eq("Joan")
+    expect(@customer.last_name).to eq("Clarke")
+    expect(@customer.created_at).to be_an_instance_of Time
+    expect(@customer.updated_at).to be_an_instance_of Time
   end
 
   it '#update_fname' do
-    @c.update_fname('John')
-    expect(@c.first_name).to eq('John')
+    @customer.update_fname('John')
+    expect(@customer.first_name).to eq('John')
   end
 
   it '#update_lname' do
-    @c.update_lname('Travolta')
-    expect(@c.last_name).to eq('Travolta')
+    @customer.update_lname('Travolta')
+    expect(@customer.last_name).to eq('Travolta')
   end
 
   it '#update_updated_at' do
-    @c.update_updated_at
-    expect(@c.updated_at).to_not eq(@updated_at)
+    @customer.update_updated_at
+    expect(@customer.updated_at).to_not eq(@updated_at)
   end
 end

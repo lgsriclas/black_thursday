@@ -1,26 +1,26 @@
 require'./lib/merchant.rb'
 
 RSpec.describe Merchant do
-  it 'exists' do
-    data = {id: 5, name: "Turing School"}
-    merchant = Merchant.new(data)
-
-    expect(merchant).to be_a Merchant
+  before :each do
+    @merchant = Merchant.new({ id: 5, name: "Turing School" })
   end
 
-  it 'has attributes' do
-    data = {id: 5, name: "Turing School"}
-    merchant = Merchant.new(data)
+  context '#initialize' do
+    it 'exists' do
+      expect(@merchant).to be_a Merchant
+    end
 
-    expect(merchant.name).to eq "Turing School"
-    expect(merchant.id).to eq 5
+    it 'has readable attributes' do
+      expect(@merchant.name).to eq "Turing School"
+      expect(@merchant.id).to eq 5
+    end
   end
 
-  it '#update_name' do
-    data = {id: 5, name: "Turing School"}
-    merchant = Merchant.new(data)
-    
-    merchant.update_name('Target')
-    expect(merchant.name).to eq('Target')
+  context 'update methods' do
+    it '#update_name' do
+      @merchant.update_name('Target')
+
+      expect(@merchant.name).to eq('Target')
+    end
   end
 end

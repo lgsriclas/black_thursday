@@ -3,66 +3,41 @@ require './lib/invoice_item_repository'
 require 'bigdecimal'
 
 RSpec.describe 'invoice_item_repository' do
-  describe '#initialize' do
+  before :each do
+    @invoice_items = InvoiceItemRepository.new('./data/invoice_items.csv')
+  end
+
+  context '#initialize' do
     it 'is an instance of InvoiceItemRepository' do
-      path = './data/invoice_items.csv'
-      iir = InvoiceItemRepository.new(path)
-
-      expect(iir).to be_an_instance_of InvoiceItemRepository
+      expect(@invoice_items).to be_an_instance_of InvoiceItemRepository
     end
   end
 
-  describe 'all' do
-    it 'returns an array of all invoice item instances' do
-      path = './data/invoice_items.csv'
-      iir = InvoiceItemRepository.new(path)
-
-      expect(iir.all).to be_an Array
-      expect(iir.all.length).to eq(21830)
+  context 'Methods' do
+    it '#all' do
+      expect(@invoice_items.all).to be_an Array
+      expect(@invoice_items.all.length).to eq(21830)
     end
-  end
 
-  describe 'find_by_id' do
-    it 'returns an instance of InvoiceItem with matching id' do
-      path = './data/invoice_items.csv'
-      iir = InvoiceItemRepository.new(path)
-
-      expect(iir.find_by_id(1)).to be_an_instance_of(InvoiceItem)
-      expect(iir.find_by_id(1).id).to eq(1)
-      expect(iir.find_by_id(1).quantity).to eq(5)
-      expect(iir.find_by_id(21831)).to eq(nil)
+    it '#find_by_id' do
+      expect(@invoice_items.find_by_id(1)).to be_an_instance_of(InvoiceItem)
+      expect(@invoice_items.find_by_id(1).id).to eq(1)
+      expect(@invoice_items.find_by_id(21831)).to eq(nil)
     end
-  end
 
-  describe 'find all by item id' do
-    it 'returns all instances of InvoiceItem with the same item id' do
-      path = './data/invoice_items.csv'
-      iir = InvoiceItemRepository.new(path)
-
-      expect(iir.find_all_by_item_id(263519844)).to be_an(Array)
-      expect(iir.find_all_by_item_id(263519844)[0].id).to eq(1)
-      expect(iir.find_all_by_item_id(263519844)[0].quantity).to eq(5)
-      expect(iir.find_all_by_item_id(300000000)).to eq([])
+    it '#find_all_by_item_id' do
+      expect(@invoice_items.find_all_by_item_id(263519844)).to be_an(Array)
+      expect(@invoice_items.find_all_by_item_id(263519844)[0].id).to eq(1)
+      expect(@invoice_items.find_all_by_item_id(300000000)).to eq([])
     end
-  end
 
-  describe 'find all by invoice id' do
-    it 'returns all instances of InvoiceItem with the same invoice id' do
-      path = './data/invoice_items.csv'
-      iir = InvoiceItemRepository.new(path)
-
-      expect(iir.find_all_by_invoice_id(2)).to be_an(Array)
-      expect(iir.find_all_by_invoice_id(2)[0].id).to eq(9)
-      expect(iir.find_all_by_invoice_id(2)[0].quantity).to eq(6)
-      expect(iir.find_all_by_invoice_id(300000000)).to eq([])
+    it '#find all by invoice id' do
+      expect(@invoice_items.find_all_by_invoice_id(2)).to be_an(Array)
+      expect(@invoice_items.find_all_by_invoice_id(2)[0].id).to eq(9)
+      expect(@invoice_items.find_all_by_invoice_id(300000000)).to eq([])
     end
-  end
 
-  describe 'create' do
-    it 'creates a new instance of InvoiceItem' do
-      path = './data/invoice_items.csv'
-      iir = InvoiceItemRepository.new(path)
-
+    it '#create' do
       attributes = {
         id:           6,
         item_id:      7,
@@ -72,17 +47,14 @@ RSpec.describe 'invoice_item_repository' do
         created_at:   Time.now.to_s,
         updated_at:   Time.now.to_s
       }
+      expected = @invoice_items.create(attributes)
 
-      expect(iir.create(attributes).last.quantity).to eq(1)
-      expect(iir.create(attributes).last.invoice_id).to eq(8)
+      expect(expected).to be_an Array
+      expect(expected.last.item_id).to eq 7
+      expect(expected.last.id).to eq 21831
     end
-  end
 
-  describe 'update' do
-    it 'updates the quantity of unit price InvoiceItem' do
-      path = './data/invoice_items.csv'
-      iir = InvoiceItemRepository.new(path)
-
+    it '#update' do
       attributes = {
         id:           6,
         item_id:      7,
@@ -92,19 +64,16 @@ RSpec.describe 'invoice_item_repository' do
         created_at:   Time.now,
         updated_at:   Time.now
       }
+      @invoice_items.update(1, attributes)
 
-      iir.update(1, attributes)
-      expect(iir.find_by_id(1).quantity).to eq(1)
-      expect(iir.find_by_id(1).unit_price).to eq(1099)
+      expect(@invoice_items.find_by_id(1).quantity).to eq(1)
+      expect(@invoice_items.find_by_id(1).unit_price).to eq(1099)
     end
-  end
 
-  describe 'delete' do
-    it 'deletes an instance of InvoiceItem' do
-      path = './data/invoice_items.csv'
-      iir = InvoiceItemRepository.new(path)
-      iir.delete('1')
-      expect(iir.find_by_id('1')).to eq(nil)
+    it '#delete' do
+      @invoice_items.delete('1')
+      
+      expect(@invoice_items.find_by_id('1')).to eq(nil)
     end
   end
 end

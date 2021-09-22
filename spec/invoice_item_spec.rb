@@ -14,7 +14,7 @@ RSpec.describe 'InvoiceItem' do
     })
   end
 
-  describe '#initialize' do
+  context '#initialize' do
     it 'exists' do
       expect(@ii).to be_an_instance_of InvoiceItem
     end

@@ -38,5 +38,15 @@ describe Invoice do
       expect(@i.created_at).to eq(@i.created_at)
       expect(@i.updated_at).to eq(@i.created_at)
     end
+
+    it '#update_status' do
+      @i.update_status(:shipped)
+      expect(@i.status).to eq(:shipped)
+    end
+
+    it '#update_updated_at' do
+      @i.update_updated_at
+      expect(@i.updated_at).to_not eq(@updated_at)
+    end
   end
 end

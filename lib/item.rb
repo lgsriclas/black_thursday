@@ -31,8 +31,8 @@ class Item
     @description = description
   end
 
-  def update_up(up)
-    @unit_price = up
+  def update_unit_price(unit_price)
+    @unit_price = unit_price
   end
 
   def update_updated_at

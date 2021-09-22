@@ -60,7 +60,7 @@ class InvoiceRepository
   def update(id, attributes)
     invoice_to_update = find_by_id(id)
     invoice_to_update.update_status(attributes[:status]) if attributes[:status]
-    invoice_to_update.update_updated_at
+    invoice_to_update.update_updated_at if invoice_to_update
   end
 
   def delete(id)

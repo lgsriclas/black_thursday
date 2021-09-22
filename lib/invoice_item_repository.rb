@@ -55,7 +55,7 @@ class InvoiceItemRepository
     ii = find_by_id(id)
     ii.update_quantity(attributes[:quantity]) if attributes[:quantity]
     ii.update_unit_price(attributes[:unit_price]) if attributes[:unit_price]
-    ii.update_updated_at
+    ii.update_updated_at if ii
     ii
   end
 

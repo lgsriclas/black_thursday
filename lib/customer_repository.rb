@@ -58,7 +58,7 @@ class CustomerRepository
     customer = find_by_id(id)
     customer.update_fname(attributes[:first_name]) if attributes[:first_name]
     customer.update_lname(attributes[:last_name]) if attributes[:last_name]
-    customer.update_updated_at
+    customer.update_updated_at if customer
     customer
   end
 

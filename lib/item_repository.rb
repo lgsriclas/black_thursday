@@ -69,16 +69,16 @@ class ItemRepository
   end
 
   def update(id, attributes)
-    item_to_update = find_by_id(id)
-    name           = attributes[:name]
-    description    = attributes[:description]
-    unit_price     = attributes[:unit_price]
+    item        = find_by_id(id)
+    name        = attributes[:name]
+    description = attributes[:description]
+    unit_price  = attributes[:unit_price]
 
-    item_to_update.update_name(name) if name
-    item_to_update.update_description(description) if description
-    item_to_update.update_unit_price(unit_price) if unit_price
-    item_to_update.update_updated_at
-    item_to_update
+    item.update_name(name) if name
+    item.update_description(description) if description
+    item.update_unit_price(unit_price) if unit_price
+    item.update_updated_at if item
+    item
   end
 
   def delete(id)

@@ -200,7 +200,7 @@ RSpec.describe SalesAnalyst do
 
     it '#merchants_with_only_one_item' do
       expected = analyst.merchants_with_only_one_item
-require "pry"; binding.pry
+
       expect(expected).to be_an Array
       expect(expected.length).to eq 243
     end
@@ -222,13 +222,18 @@ require "pry"; binding.pry
     end
 
     it '#most_sold_item_for_merchant' do
-      # expected = analyst.most_sold_item_for_merchant(12334234)
-      # expect(expected).to be_an Array
       expected = analyst.most_sold_item_for_merchant(12334195)
       expect(expected).to be_an Array
       expect(expected[0].name).to eq("La rêveuse")
 
-      # expect(expected[0].name).to eq(['I Love You to the Moon and Back'])
+      expected2 = analyst.most_sold_item_for_merchant(12334105)
+      expect(expected2.length).to eq(2)
+    end
+
+    it '#best_item_for_merchant' do
+      expected = analyst.best_item_for_merchant(12334195)
+      expect(expected).to be_an_instance_of Item
+      expect(expected.name).to eq("Frottement virginal")
     end
   end
 end

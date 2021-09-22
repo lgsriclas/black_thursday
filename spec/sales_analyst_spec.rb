@@ -235,5 +235,14 @@ RSpec.describe SalesAnalyst do
       expect(expected).to be_an_instance_of Item
       expect(expected.name).to eq("Frottement virginal")
     end
+
+    it '#merchants_ranked_by_revenue' do
+      expected = analyst.merchants_ranked_by_revenue
+      require 'pry'; binding.pry
+      expect(expected.first.class).to eq Merchant
+
+      expect(expected.first.id).to eq 12334634
+      expect(expected.last.id).to eq 12336175
+    end
   end
 end

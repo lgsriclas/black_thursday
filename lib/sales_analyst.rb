@@ -334,4 +334,8 @@ class SalesAnalyst
 
     sorted_by_revenue.first
   end
+
+  def merchants_ranked_by_revenue
+    top_revenue_earners(@merchants.all.length)
+  end
 end

@@ -48,4 +48,20 @@ RSpec.describe CustomerRepository do
     expect(@cus.create(attributes).first_name).to eq("Joan")
     expect(@cus.create(attributes).last_name).to eq("Clarke")
   end
+
+  it '#update' do
+    attributes = {first_name: 'John', last_name: 'Travolta'}
+    updated = @cus.update(1, attributes)
+
+    expect(updated.first_name).to eq 'John'
+    expect(updated.last_name).to eq 'Travolta'
+    expect(updated.id).to eq 1
+  end
+
+  it '#delete' do
+    deleted = @cus.delete(1)
+
+    expect(deleted.first_name).to eq 'Joey'
+    expect(@cus.all).not_to include(deleted)
+  end
 end

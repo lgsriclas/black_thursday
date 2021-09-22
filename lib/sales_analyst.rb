@@ -277,9 +277,26 @@ class SalesAnalyst
       if invoice_paid_in_full?(ii.id)
         successful_ii << ii
       end
-    end 
+    end
 
-require "pry"; binding.pry
+    total_quantity = Hash.new(0)
 
-  end
+    successful_ii.each do |ii|
+      if !total_quantity[@items.find_by_id(ii.item_id)]
+        total_quantity[@items.find_by_id(ii.item_id)] = ii.quantity
+      else
+        total_quantity[@items.find_by_id(ii.item_id)] += ii.quantity
+      end
+    end
+
+    sorted_hash = total_quantity.sort_by { |id, quantity| -quantity }
+
+    # sorted_hash.keys.first
+    # sorted_keys = sorted_hash.keys
+    # sorted_keys.first
+    key = []
+    key << sorted_hash[0]
+
+    end
+
 end

@@ -222,8 +222,12 @@ require "pry"; binding.pry
     end
 
     it '#most_sold_item_for_merchant' do
-      expected = analyst.most_sold_item_for_merchant(12334234)
+      # expected = analyst.most_sold_item_for_merchant(12334234)
+      # expect(expected).to be_an Array
+      expected = analyst.most_sold_item_for_merchant(12334195)
       expect(expected).to be_an Array
+      expect(expected[0].name).to eq("La rêveuse")
+
       # expect(expected[0].name).to eq(['I Love You to the Moon and Back'])
     end
   end

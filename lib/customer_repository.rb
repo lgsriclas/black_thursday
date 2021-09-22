@@ -56,21 +56,13 @@ class CustomerRepository
 
   def update(id, attributes)
     customer = find_by_id(id)
-    if attributes[:first_name] != nil
-      customer.update_fname(attributes[:first_name])
-    end
-    if attributes[:last_name] != nil
-      customer.update_lname(attributes[:last_name])
-    end
-    if customer != nil
-      customer.update_updated_at
-    end
+    customer.update_fname(attributes[:first_name]) if attributes[:first_name]
+    customer.update_lname(attributes[:last_name]) if attributes[:last_name]
+    customer.update_updated_at if customer
     customer
   end
 
   def delete(id)
-    deleted_customer = find_by_id(id)
-
-    @all.delete(deleted_customer)
+    @all.delete(find_by_id(id))
   end
 end

@@ -168,17 +168,23 @@ RSpec.describe SalesAnalyst do
   context 'Iteration 4' do
 
     it '#find_all_invoice_items_by_date' do
-      expect(analyst.find_all_invoice_items_by_date('2014-02-13')).to be_a(Array)
-      expect(analyst.find_all_invoice_items_by_date('2014-02-13').length).to eq(1)
+      date = Time.parse('2014-02-13')
+
+      expect(analyst.find_all_invoice_items_by_date(date)).to be_a(Array)
+      expect(analyst.find_all_invoice_items_by_date(date).length).to eq(5)
     end
 
     it '#total_revenue_by_date' do
-      expect(analyst.total_revenue_by_date('2014-02-13')).to eq(0)
-      expect(analyst.total_revenue_by_date('2009-02-24')).to eq(1363.50)
+      date1 = Time.parse('2020-02-13')
+      date2 = Time.parse('2009-02-07')
+
+      expect(analyst.total_revenue_by_date(date1)).to eq(0)
+      expect(analyst.total_revenue_by_date(date2)).to eq(21067.77)
+      expect(analyst.total_revenue_by_date(date2)).to be_a BigDecimal
     end
 
     it '#top_revenue_earners' do
-      expected = analyst.top_revenue_earners(5)
+      expected = analyst.top_revenue_earners(10)
       first = expected.first
       last = expected.last
 
@@ -188,7 +194,7 @@ RSpec.describe SalesAnalyst do
       expect(first.id).to eq 12334634
 
       expect(last.class).to eq Merchant
-      expect(last.id).to eq 12335213
+      expect(last.id).to eq 12335747
     end
 
     it '#merchants_with_pending_invoices' do

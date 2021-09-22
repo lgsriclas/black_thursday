@@ -4,30 +4,36 @@ require 'bigdecimal'
 RSpec.describe SalesEngine do
   before :each do
     data = {
-      items: './data/items.csv',
-      merchants: './data/merchants.csv'
+      items:         './data/items.csv',
+      merchants:     './data/merchants.csv',
+      invoices:      './data/invoices.csv',
+      invoice_items: './data/invoice_items.csv',
+      transactions:  './data/transactions.csv',
+      customers:     './data/customers.csv'
     }
-    @se = SalesEngine.from_csv(data)
+    @engine = SalesEngine.from_csv(data)
   end
 
-  context 'Iteration 0' do
+  context 'Engine Creation' do
     it 'exists' do
-      expect(@se).to be_an_instance_of(SalesEngine)
+      expect(@engine).to be_an_instance_of(SalesEngine)
     end
 
-    it 'can access items' do
-      expect(@se.items.find_by_name("Disney scrabble frames")).to be_an_instance_of(Item)
-    end
-
-    it 'can access merchants' do
-      expect(@se.merchants.find_by_name("jejum")).to be_an_instance_of(Merchant)
+    it 'can access repositories' do
+      expect(@engine.items.all).to be_an Array
+      expect(@engine.items.all.first).to be_an Item
+      expect(@engine.merchants.all.first).to be_a Merchant
+      expect(@engine.invoices.all.first).to be_an Invoice
+      expect(@engine.invoice_items.all.first).to be_an InvoiceItem
+      expect(@engine.transactions.all.first).to be_a Transaction
+      expect(@engine.customers.all.first).to be_a Customer
     end
   end
 
-  context 'Iteration 1' do
+  context 'engine#analyst can create a SalesAnalyst' do
     it 'exists' do
-      sales_analyst = @se.analyst
-      expect(sales_analyst).to be_an_instance_of(SalesAnalyst)
+      analyst = @engine.analyst
+      expect(analyst).to be_a SalesAnalyst
     end
   end
 end

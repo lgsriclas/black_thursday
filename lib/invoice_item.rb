@@ -21,7 +21,7 @@ class InvoiceItem
   end
 
   def unit_price_to_dollars
-    "$" + @unit_price.to_s
+    "$#{@unit_price.to_f * 100}"
   end
 
   def update_quantity(quantity)

@@ -52,21 +52,14 @@ class InvoiceItemRepository
   end
 
   def update(id, attributes)
-    invoice_item_to_update = find_by_id(id)
-    if attributes[:quantity] != nil
-      invoice_item_to_update.update_quantity(attributes[:quantity])
-    end
-    if attributes[:unit_price] != nil
-      invoice_item_to_update.update_unit_price(attributes[:unit_price])
-    end
-    if invoice_item_to_update
-    invoice_item_to_update.update_updated_at
-    end
-    invoice_item_to_update
+    ii = find_by_id(id)
+    ii.update_quantity(attributes[:quantity]) if attributes[:quantity]
+    ii.update_unit_price(attributes[:unit_price]) if attributes[:unit_price]
+    ii.update_updated_at if ii
+    ii
   end
 
   def delete(id)
-    invoice_item_to_delete = find_by_id(id)
-    @all.delete(invoice_item_to_delete)
+    @all.delete(find_by_id(id))
   end
 end

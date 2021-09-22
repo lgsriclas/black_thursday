@@ -7,20 +7,20 @@ class Customer
                 :created_at,
                 :updated_at
 
-  def initialize(hash)
-    @id = hash[:id].to_i
-    @first_name = hash[:first_name]
-    @last_name = hash[:last_name]
-    @created_at = Time.parse(hash[:created_at])
-    @updated_at = Time.parse(hash[:updated_at])
+  def initialize(data)
+    @id         = data[:id].to_i
+    @first_name = data[:first_name]
+    @last_name  = data[:last_name]
+    @created_at = Time.parse(data[:created_at])
+    @updated_at = Time.parse(data[:updated_at])
   end
 
-  def update_fname(name)
-    @first_name = name
+  def update_fname(first_name)
+    @first_name = first_name
   end
 
-  def update_lname(name)
-    @last_name = name
+  def update_lname(last_name)
+    @last_name = last_name
   end
 
   def update_updated_at

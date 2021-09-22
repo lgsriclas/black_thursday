@@ -24,4 +24,19 @@ RSpec.describe Customer do
     expect(@c.created_at).to be_an_instance_of Time
     expect(@c.updated_at).to be_an_instance_of Time
   end
+
+  it '#update_fname' do
+    @c.update_fname('John')
+    expect(@c.first_name).to eq('John')
+  end
+
+  it '#update_lname' do
+    @c.update_lname('Travolta')
+    expect(@c.last_name).to eq('Travolta')
+  end
+
+  it '#update_updated_at' do
+    @c.update_updated_at
+    expect(@c.updated_at).to_not eq(@updated_at)
+  end
 end

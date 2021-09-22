@@ -16,7 +16,7 @@ class SalesEngine
               :customers
 
   def self.from_csv(data)
-    @sales_engine = SalesEngine.new(data)
+    SalesEngine.new(data)
   end
 
   def initialize(data)

@@ -72,10 +72,7 @@ class TransactionRepository
     txn_to_update.update_ccnum(cc_num) if cc_num
     txn_to_update.update_cc_expiration(cc_exp) if cc_exp
     txn_to_update.update_result(result) if result
-    if txn_to_update != nil
-      txn_to_update.updated_at
-      txn_to_update.update_updated_at
-    end
+    txn_to_update.update_updated_at
     txn_to_update
   end
 

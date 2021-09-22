@@ -99,7 +99,7 @@ describe InvoiceRepository do
             :id          => 1,
             :customer_id => 7,
             :merchant_id => 8,
-            :status      => 'shipped',
+            :status      => :shipped,
             :created_at  => Time.now.round(2),
             :updated_at  => Time.now.round(2),
           })

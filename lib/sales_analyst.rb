@@ -283,20 +283,55 @@ class SalesAnalyst
 
     successful_ii.each do |ii|
       if !total_quantity[@items.find_by_id(ii.item_id)]
-        total_quantity[@items.find_by_id(ii.item_id)] = ii.quantity
+        total_quantity[@items.find_by_id(ii.item_id)] = ii.quantity # * ii.unit_price
       else
-        total_quantity[@items.find_by_id(ii.item_id)] += ii.quantity
+        total_quantity[@items.find_by_id(ii.item_id)] += ii.quantity # * ii.unit_price
       end
     end
 
-    sorted_hash = total_quantity.sort_by { |id, quantity| -quantity }
+    values = total_quantity.values
 
-    # sorted_hash.keys.first
-    # sorted_keys = sorted_hash.keys
-    # sorted_keys.first
-    key = []
-    key << sorted_hash[0]
+    max = values.max
 
+    result = []
+
+    total_quantity.each do |item, quantity|
+      if quantity == max
+        result << item
+      end
+    end
+    result
+  end
+
+  def best_item_for_merchant(merchant_id)
+    items_by_merchant = @items.find_all_by_merchant_id(merchant_id)
+    array_of_item_ids = items_by_merchant.map do |item|
+      item.id
     end
 
+    array_of_ii = array_of_item_ids.map do |item_id|
+      @invoice_items.find_all_by_item_id(item_id)
+    end.flatten
+
+    successful_ii = []
+    array_of_ii.each do |ii|
+      if invoice_paid_in_full?(ii.id)
+        successful_ii << ii
+      end
+    end
+
+    total_revenue = Hash.new(0)
+
+    successful_ii.each do |ii|
+      if !total_revenue[@items.find_by_id(ii.item_id)]
+        total_revenue[@items.find_by_id(ii.item_id)] = ii.quantity * ii.unit_price
+      else
+        total_revenue[@items.find_by_id(ii.item_id)] += ii.quantity * ii.unit_price
+      end
+    end
+
+    sorted_by_revenue = total_revenue.sort_by { |item, revenue| revenue }.flatten
+
+    sorted_by_revenue.first
+  end
 end

@@ -238,7 +238,6 @@ RSpec.describe SalesAnalyst do
 
     it '#merchants_ranked_by_revenue' do
       expected = analyst.merchants_ranked_by_revenue
-      require 'pry'; binding.pry
       expect(expected.first.class).to eq Merchant
 
       expect(expected.first.id).to eq 12334634
